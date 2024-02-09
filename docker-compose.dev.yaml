@@ -1,0 +1,26 @@
+version: "3.9"
+services:
+  mysql:
+    image: mysql:latest
+    container_name: mysql
+    volumes:
+      - mysql_data:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: oMsSc8V4$z3aFtprKd
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: YGqHCma4j#9E&7fiMg
+
+  wordpress:
+    image: wordpress:latest
+    container_name: wordpress
+    depends_on:
+      - mysql
+    volumes:
+      - ./src:/var/www/html/wp-content/plugins/Imagify
+    ports:
+      - 3333:80
+
+volumes:
+  mysql_data:
