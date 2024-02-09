@@ -15,7 +15,13 @@ if (!defined("ABSPATH")) {
  */
 
 /* -----------------------------------------------------------------------------
+Register Imagely custom page
+----------------------------------------------------------------------------- */
+require_once plugin_dir_path(__FILE__) . 'functions/custom_page.php';
+add_action('admin_menu', 'imagely_menu_page');
+add_action('admin_init', 'register_imagely_menu_page_settings');
+/* -----------------------------------------------------------------------------
 Register Convert Image on Upload
 ----------------------------------------------------------------------------- */
 require_once plugin_dir_path(__FILE__) . 'functions/convert_image_on_upload.php';
-add_filter('wp_handle_upload_prefilter', 'functions/convert_image_on_upload');
+add_filter('wp_handle_upload_prefilter', 'convert_image_on_upload');
