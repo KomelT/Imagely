@@ -5,13 +5,17 @@ Plugin sends images to an instance of [https://github.com/KomelT/media-converter
 
 ## Development
 
-Git clone plugin and start development instance of WordPress
+1. Git clone plugin and start development instance of WordPress
 
 ```bash
 git clone https://github.com/KomelT/Imagely.git
 cd Imagely
 docker compose -f docker-compose.dev.yaml up
 ```
+
+2. Continue WordPress instalation on [https://localhost:3333](https://localhost:3333).
+3. Activate plugin
+4. Add API infomation `wp-admin > Imagely`
 
 ### Build
 
