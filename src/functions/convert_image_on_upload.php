@@ -1,38 +1,25 @@
 <?php
 
 function convert_image_on_upload($file) {
-    $api_url = 'YOUR_API_ENDPOINT';
+    $api_url = get_option('api_url');
+    $api_key = get_option('api_key');
 
-    // Assume $file contains the file path
-    $response = wp_remote_post($api_url, [
-        'body' => [
-            'image' => new CURLFile($file['tmp_name']),
-        ],
-        'headers' => [
-            'Content-Type' => 'multipart/form-data'
-        ]
-    ]);
+    $curl = curl_init($api_url);
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($curl, CURLOPT_POST, true);
+    curl_setopt($curl, CURLOPT_POSTFIELDS, ['file' => new CURLFile($file['tmp_name'], $file['type'], $file['name'])]);
+    curl_setopt($curl, CURLOPT_HTTPHEADER, ["x-api-key: $api_key"]);
 
-    if (is_wp_error($response)) {
-        // Handle error
-        $error_message = $response->get_error_message();
-        error_log("Image conversion failed: $error_message");
-        return $file; // return original file on error
+    // Execute the request
+    $response = curl_exec($curl);
+    $error = curl_error($curl);
+    curl_close($curl);
+
+    if ($error) {
+        error_log("Photo compression failed: $error");
+        return $file;
     } else {
-        // Check if API response is valid
-        $body = wp_remote_retrieve_body($response);
-        $decoded_body = json_decode($body, true);
-
-        if (isset($decoded_body['converted_image'])) {
-            // Assume 'converted_image' contains the URL of the new image
-            $new_image_url = $decoded_body['converted_image'];
-
-            // Replace the original file with the new one
-            $new_image_data = file_get_contents($new_image_url);
-            if ($new_image_data !== false) {
-                file_put_contents($file['tmp_name'], $new_image_data);
-            }
-        }
+        file_put_contents($file['tmp_name'], $response);
     }
 
     return $file;
