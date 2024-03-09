@@ -4,7 +4,7 @@ function convert_image_on_upload($file) {
     $api_url = get_option('api_url');
     $api_key = get_option('api_key');
 
-    $curl = curl_init($api_url);
+    $curl = curl_init($api_url . "/api/photo");
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($curl, CURLOPT_POST, true);
     curl_setopt($curl, CURLOPT_POSTFIELDS, ['file' => new CURLFile($file['tmp_name'], $file['type'], $file['name'])]);
