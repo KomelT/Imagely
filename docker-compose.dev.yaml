@@ -19,8 +19,10 @@ services:
       - mysql
     volumes:
       - ./src:/var/www/html/wp-content/plugins/Imagify
+      - wordpress_data:/var/www/html
     ports:
       - 3333:80
 
 volumes:
   mysql_data:
+  wordpress_data:
